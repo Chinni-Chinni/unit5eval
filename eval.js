@@ -46,52 +46,47 @@ function displayData(pockdata){
         
     })
 }
-var arr = []
-
-var url2 = "https://pokeapi.co/api/v2/pokemon/ditto";
-
-async function getData1(){
-
-    try{
-        var res = await fetch(url2);
-        var data = await res.json();
-        // console.log(data)
-
-        displayData1(data);
-       
-       
-    }catch(err){
-        console.log(err)
-    }
-
-}
-getData1();
-
-var container = document.querySelector("#container");
-
-function displayData1(gettingData){
-    console.log(gettingData)
-var div = document.createElement("div");
-var id = document.createElement("p");
-id.innerText = "id"+ "  " +gettingData.id;
-
-var height = document.createElement("p");
-height.innerText = gettingData.height;
-
-var weight = document.createElement("p");
-weight.innerText = gettingData.weight;
-
-gettingData.abilities.forEach(function(d){
-    var ability =  document.createElement("p");
-    ability.innerHTML = d.ability.name;
-div.append(id,height,weight,ability,ability);
-container.append(div)
 
 
-})
-
-
-
-
-
-}
+document.querySelector('form').addEventListener('submit',function(){
+    event.preventDefault();
+    var names=document.getElementById('poke').value;
+    fetch("https://pokeapi.co/api/v2/pokemon/ditto").then((res)=>{
+            res.json().then((res)=>{
+               console.log(res);
+            function displaySecond(res){
+                var box=document.createElement("div");
+                var id1=document.createElement('h3');
+                id1.innerText=res.id;
+                var name=document.createElement('h3');
+                name.innerText=res.name;
+                var weight=document.createElement('h3');
+                weight.innerText=res.weight;
+                var height=document.createElement('h3');
+                height.innerText=res.height;
+                box.append(name,id1,weight,height);
+                document.querySelector("#container").append(box);
+            }
+            displaySecond(res);
+    var dummy=pokeData1;
+    //console.log(pokeData1,"kk")
+            function searchMe(names){
+                  //  console.log(names);
+                    if(names==''){
+                    }else{
+                        var searchData=dummy.filter(function(mv){
+                        if(mv.name.includes(names)){
+                            return true;
+                        }else{
+                            return false;
+                        }
+                    });
+                    return searchData;
+                }
+            }
+            var searchedData=searchMe(names);
+            //displaySecond(searchedData)
+        });
+    });
+    });
+    
