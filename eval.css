@@ -1,0 +1,15 @@
+table{
+    text-align: center;
+    width: 30%;
+    margin: auto;
+    border: 1px solid black;
+}
+
+table>tr>td{
+    font-size: 30px;
+}
+
+tr,td{
+    border: 1px solid red;
+}
+
