@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cloud data</title>
+</head>
+<style>
+    #container{
+        display: grid;
+        grid-template-columns: repeat(2,1fr);
+        width: 70%;
+        grid-gap: 40px;
+        margin: auto;
+    }
+
+.main{
+    border: 5px solid red;
+    text-align: center;
+    background-color: antiquewhite;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+.main>p{
+    font-size: 25px;
+    color: blue;
+}
+h1{
+    text-align: center;
+    color: green;
+}
+
+.clodeImg{
+    width: 600px;
+    height: 400px;
+    border: 5px solid rgb(94, 86, 86);
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+</style>
+<body>
+    <h1><u>Wheather Data</u></h1>
+    <div id = "container"></div>
+</body>
+</html>
+
+<script>
+    
+    var url = "https://api.openweathermap.org/data/2.5/weather?q=London&appid=cd3feb321710a3bae53d46935ced0ac8";
+
+async function getData() {
+  try {
+   
+    let res = await fetch(url); 
+    let data = await res.json();
+    displayData(data);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+getData();
+
+
+function displayData(weatherdata){
+var main = document.createElement("div");
+main.setAttribute("class","main");
+
+var temp = document.createElement("p");
+temp.innerText = "temp: "+weatherdata.main.temp;
+
+var humidity = document.createElement("p");
+humidity.innerText = "humidity :"+ weatherdata.main.humidity;
+
+var pressure = document.createElement("p");
+pressure.innerText = "pressure :"+ weatherdata.main.pressure;
+
+var windSpeed = document.createElement("P");
+windSpeed.innerText = "windspeed:"+weatherdata.wind.speed;
+
+var sunrise = document.createElement("p");
+sunrise.innerText = "sunrise: "+ weatherdata.sys.sunrise;
+
+var sunset = document.createElement("p");
+sunset.innerText = "sunset : " +weatherdata.sys.sunset;
+
+var description = document.createElement("p");
+description.innerText = "description : "+weatherdata.weather[0].description;
+if(description!="clear sky"){
+    var imgDiv = document.createElement("div");
+    var image = document.createElement("img");
+    image.setAttribute("class","clodeImg");
+    image.src = "https://images.pexels.com/photos/53594/blue-clouds-day-fluffy-53594.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2";
+    imgDiv.append(image);
+    document.querySelector("#container").append(imgDiv);
+}
+var countryName = document.createElement("h2");
+countryName.innerText = "Country: "+weatherdata.name;
+
+main.append(countryName,temp,humidity,pressure,windSpeed,sunrise,sunset,description);
+document.querySelector("#container").append(main);
+
+
+
+}
+</script>

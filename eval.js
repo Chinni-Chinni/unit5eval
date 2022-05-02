@@ -23,31 +23,29 @@ async function getData(){
 getData();
 
 
-  
+    var table = document.querySelector("#table");
+    var tbody = document.querySelector("#tbody");
+
+    function displayData(pockdata){
+        pockdata.forEach(function(data){
+
+            var tr = document.createElement("tr");
+
+            var td = document.createElement("td");
+            td.innerHTML = data.name;
+            // console.log(td)
+
+            tr.append(td);
+            tbody.append(tr);
+            table.append(tbody)
+            
+
+            
+        })
+    }
 
 
-var table = document.querySelector("#table");
-var tbody = document.querySelector("#tbody");
-
-function displayData(pockdata){
-    pockdata.forEach(function(data){
-
-        var tr = document.createElement("tr");
-
-        var td = document.createElement("td");
-        td.innerHTML = data.name;
-        // console.log(td)
-
-        tr.append(td);
-        tbody.append(tr);
-        table.append(tbody)
-        
-
-        
-    })
-}
-
-
+    
 document.querySelector('form').addEventListener('submit',function(){
     event.preventDefault();
     var names=document.getElementById('poke').value;
