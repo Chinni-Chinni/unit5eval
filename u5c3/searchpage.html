@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>searchpage</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+    <h1>search page</h1>
+    <div >
+        <ul id="navbar">
+            <li><a href="home.html">homepage</a></li>
+            <li><a href="individualBrewaryPage.html">individualBrewaryPage</a></li>
+            <li><a href="searchpage.html">search page</a></li>
+            
+        </ul>
+    </div>
+
+    <div id = "container">
+        <input type = "text" placeholder="Search Here" id="query" oninput="debounce(main,1000)">
+        <div id = "searchContainer"></div>
+    </div>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>brewaryType</th>
+            <th>City</th>
+            <th>State</th>
+            <th>MoreDetails</th>
+        </tr>
+    </table>
+</body>
+</html>
+
+<script>
+     async function main(){
+        try{
+            let data = await searchData();
+            if(!data){
+                return false;
+            }
+
+        }
+        catch(err){
+            console.log(err);
+        }
+    }
+    main()
+
+    async function searchData(){
+        try{
+        let search= document.querySelector("#query").value;
+        var url = `https://api.openbrewerydb.org/breweries/search?query=${search}`;
+        var res = await fetch(url);
+        var data = await res.json();
+        console.log(data)
+        displayData(data);
+        }
+        catch(err){
+            var erroDiv = document.createElement("div");
+            var error = document.createElement("h2");
+            error.innerText = "NO brewary";
+            erroDiv.append(error);
+            document.querySelector("#searchContainer").append(erroDiv);
+            console.log(err);
+        }
+    }
+
+    function displayData(data){
+        // document.querySelector("table").innerText = "";
+        data.forEach(function(brewary){
+            var tr = document.createElement("tr");
+
+            var td1 = document.createElement("td");
+            td1.innerText = brewary.name;
+
+            var td2 = document.createElement("td");
+            td2.innerText = brewary.brewery_type;
+
+            var td3 = document.createElement("td");
+            td3.innerText = brewary.state;
+
+            var td4 = document.createElement("td");
+            td4.innerText = brewary.city;
+
+            var button = document.createElement("button");
+            button.innerText = "MoreDetails"
+            button.addEventListener("click",function(){
+                gettingid(brewary.id);
+
+            })
+
+            tr.append(td1,td2,td3,td4,button);
+            document.querySelector("table").append(tr);
+            
+
+        })
+
+    }
+
+
+    let timerId;
+function debounce(fun,delay){
+    if(timerId){
+        clearTimeout(timerId);
+    }
+    timerId = setTimeout(function(){
+        fun();
+    },delay)
+}
+</script>

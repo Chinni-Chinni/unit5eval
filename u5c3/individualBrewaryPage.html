@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>individualPage</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+<style>
+    #container{
+        width: 80%;
+        margin: auto;
+        display: grid;
+        grid-template-columns: repeat(3,1fr);
+        grid-template-rows: auto;
+        grid-gap: 20px;
+        text-align: center;
+    }
+    #container > div{
+        border: 2px solid gray;
+    }
+</style>
+<body>
+    <h1>individualBrewaryPage</h1>
+    <div>
+        <ul id="navbar">
+            <li><a href="home.html">homepage</a></li>
+            <li><a href="individualBrewaryPage.html">individualBrewaryPage</a></li>
+            <li><a href="searchpage.html">search page</a></li>
+            
+        </ul>
+    </div>
+    <div id = "container"></div>
+</body>
+</html>
+
+<script>
+    var brewaryData = JSON.parse(localStorage.getItem("Id")) || [];
+
+    async function getData(id){
+        try{
+        var url = `https://api.openbrewerydb.org/breweries/${id}`;
+        var res = await fetch(url);
+        var data = await res.json();
+        displayData(data)
+        }
+        catch(err){
+            console.log(err);
+        }
+
+    }
+  
+
+    function retrive(brewaryData){
+        brewaryData.forEach(function(data){
+            getData(data);
+
+        })
+
+        }
+        
+        retrive(brewaryData);
+    
+    function displayData(data){
+        // document.querySelector("#container").innertext = "";
+
+        var div = document.createElement("div");
+
+        var name = document.createElement("h3");
+        name.innerText = "Name"+ data.name;
+
+        var city = document.createElement("p");
+        city.innerText = "City" + data.city;
+
+        var state = document.createElement("p");
+        state.innerText = "State" +data.state;
+
+        var type = document.createElement("p");
+        type.innerText =  "type" + data.brewery_type;
+
+        div.append(name,city,state,type);
+        document.querySelector("#container").append(div);
+
+        
+
+
+    }
+</script>

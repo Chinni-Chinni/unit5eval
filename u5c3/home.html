@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>homepage</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+<style>
+    table,tr,td,th{
+        border: 2px solid gray;
+
+    }
+    th{
+        font-size: 30px;
+    }
+    td{
+        font-size: 20px;
+    }
+    table{
+        margin-left: 200px;
+    }
+</style>
+<body>
+    <h1>homePage</h1>
+    <div>
+        <ul id="navbar">
+            <li><a href="./home.html">homepage</a></li>
+            <li><a href="individualBrewaryPage.html">individualBrewaryPage</a></li>
+            <li><a href="searchpage.html">search page</a></li>
+            
+        </ul>
+    </div>
+
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>brewaryType</th>
+            <th>City</th>
+            <th>State</th>
+            <th>MoreDetails</th>
+        </tr>
+    </table>
+</body>
+</html>
+<script>
+    var url = `https://api.openbrewerydb.org/breweries`;
+    async function getData(){
+        try{
+            var res = await fetch(url);
+
+            var data = await res.json();
+            displayData(data);
+        }
+        catch(err){
+            console.log(err);
+        }
+       
+
+
+    }
+    getData();
+
+    function displayData(data){
+        // document.querySelector("table").innerText = "";
+        data.forEach(function(brewary){
+            var tr = document.createElement("tr");
+
+            var td1 = document.createElement("td");
+            td1.innerText = brewary.name;
+
+            var td2 = document.createElement("td");
+            td2.innerText = brewary.brewery_type;
+
+            var td3 = document.createElement("td");
+            td3.innerText = brewary.state;
+
+            var td4 = document.createElement("td");
+            td4.innerText = brewary.city;
+
+            var button = document.createElement("button");
+            button.innerText = "MoreDetails"
+            button.addEventListener("click",function(){
+                gettingid(brewary.id);
+
+            })
+
+            tr.append(td1,td2,td3,td4,button);
+            document.querySelector("table").append(tr);
+            
+
+        })
+
+    }
+
+    var brewary=JSON.parse(localStorage.getItem('Id'))||[];
+    function gettingid(data){
+        brewary.push(data);
+        localStorage.setItem('Id',JSON.stringify(brewary));
+        
+    }
+</script>
