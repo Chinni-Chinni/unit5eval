@@ -19,7 +19,7 @@
     </div>
 
     <div id = "container">
-        <input type = "text" placeholder="Search Here" id="query" oninput="debounce(main,1000)">
+    <h3>Search Here</h3><input type = "text" placeholder="Search Here" id="query" oninput="debounce(main,1000)">
         <div id = "searchContainer"></div>
     </div>
     <table>
@@ -89,6 +89,7 @@
             button.innerText = "MoreDetails"
             button.addEventListener("click",function(){
                 window.location.href = "individualBrewaryPage.html";
+                gettingid(brewary.id);
 
             })
 
@@ -98,6 +99,13 @@
 
         })
 
+    }
+
+    var brewary=JSON.parse(localStorage.getItem('Id'))||[];
+    function gettingid(data){
+        brewary.push(data);
+        localStorage.setItem('Id',JSON.stringify(brewary));
+        
     }
 
 
