@@ -20,6 +20,9 @@
             
         </ul>
     </div>
+    <div id = "select">
+
+    </div>
 
     <table>
         <tr>
@@ -39,7 +42,7 @@
             var res = await fetch(url);
 
             var data = await res.json();
-            displayData(data);
+            display(data);
         }
         catch(err){
             console.log(err);
@@ -50,9 +53,43 @@
     }
     getData();
 
+    var select = document.createElement("select");
+    function display(brewary){
+      
+         select.setAttribute("id","selected");
+         brewary.forEach(function(brewary){
+            var option = document.createElement("option");
+            option.innerText = brewary.brewery_type;
+            select.append(option);
+            document.querySelector("#select").append(select);
+
+        })
+       
+       
+
+    }
+
+    async function get(selected){
+        try{
+            var url = `https://api.openbrewerydb.org/breweries?by_name=${selected}&per_page=3`;
+            var res = await fetch(url);
+
+            var data = await res.json();
+            displayData(data);
+        }
+        catch(err){
+            console.log(err);
+        }
+
+
+
+    }
+
     function displayData(data){
-        // document.querySelector("table").innerText = "";
+        document.querySelector("table").innerText = "";
+       
         data.forEach(function(brewary){
+          
             var tr = document.createElement("tr");
 
             var td1 = document.createElement("td");
@@ -88,4 +125,11 @@
         localStorage.setItem('Id',JSON.stringify(brewary));
         
     }
+
+    document.querySelector("#select").addEventListener("change",function(){
+        var selectedBrewary = document.querySelector("#selected").value;
+        console.log(selectedBrewary)
+        get(selectedBrewary);
+    })
+   
 </script>
